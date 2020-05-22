@@ -1,20 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define null 0
 struct bst
 {
 	struct bst *left;
 	struct bst *right;
 	int data;
-} 
-struct bst head=null;
-struct bst *createnode(node,key)
+};
+struct bst *head=null;
+void search(struct bst *node,int key,int dflag)
+{
+	struct bst *temp;
+	if (node->data>key)
+	{
+		search(node->left,key,dflag);
+		temp=node;
+	}
+	else if (node->data<key)
+	{
+		search(node->right,key,dflag);
+		temp=node;
+	}
+	else
+	{
+		if (node->data==key && dflag!=1)
+		{
+			printf("Element found :)\n");
+		}
+		else if (node->data==key && dflag==1)
+		{
+			temp=null;
+			printf("Element deleted\n");
+		}
+		else
+		{
+			printf("Element not found\n");
+		}
+	}
+}
+void delete()
+{
+	int key,dflag=1;
+	printf("Enter the node to be deleted:");
+	scanf("%d",&key);
+	search(head,key,1);
+}
+struct bst *createnode(struct bst *node,int key)
 {
 	struct bst *temp;
 	temp=(struct bst *)malloc(sizeof(struct bst));
 	temp->data=key;
-	return temp;
+	node=temp;
 }
-void getnode(node,key)
+void getnode(struct bst *node,int key)
 {
 	if (node->data>key)
 	{
@@ -26,7 +64,7 @@ void getnode(node,key)
 	}
 	else
 	{
-		node->right=createnode(node,key));
+		createnode(node,key);
 	}
 }
 void insert()
@@ -45,10 +83,10 @@ void insert()
 }
 void main()
 {
-	int choice;
-	printf("------Binary Search Tree------');
-	print("\n");
-	printf("\n1.Insert()\n2.Delete()\n3.Search()\n4.Exit()\n");
+	int choice,key;
+	printf("------Binary Search Tree------");
+	printf("\n");
+	printf("\n1.Insert\n2.Delete\n3.Search\n4.Exit\n");
 	printf("Enter your choice:");
 	scanf("%d",&choice);
 	do
@@ -57,7 +95,7 @@ void main()
 		{
 			case 1:insert();break;
 			case 2:delete();break;
-			case 3:search();break;
+			case 3:printf("Enter the element to be searched\n");scanf("%d",&key);search(head,key,0);break;
 		}
-	} while(choice!=4)
+	} while(choice!=4);
 }
